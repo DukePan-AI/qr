@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QR Photo Booth</title>
+    <style>
+        :root {
+            color-scheme: light;
+            --bg: #f5f1e8;
+            --panel: rgba(255, 255, 255, 0.78);
+            --text: #132033;
+            --muted: #5f6c7d;
+            --accent: #c84f2f;
+            --accent-deep: #8f341f;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            min-height: 100vh;
+            display: grid;
+            place-items: center;
+            padding: 24px;
+            background:
+                radial-gradient(circle at top left, rgba(200, 79, 47, 0.24), transparent 34%),
+                radial-gradient(circle at bottom right, rgba(19, 32, 51, 0.18), transparent 28%),
+                linear-gradient(135deg, #f8f4eb, #ebe3d2 58%, #e1d6c1);
+            color: var(--text);
+            font-family: "Segoe UI", "Malgun Gothic", sans-serif;
+        }
+
+        .panel {
+            width: min(100%, 760px);
+            padding: 36px;
+            border-radius: 28px;
+            background: var(--panel);
+            border: 1px solid rgba(19, 32, 51, 0.08);
+            box-shadow: 0 24px 60px rgba(19, 32, 51, 0.16);
+            backdrop-filter: blur(10px);
+        }
+
+        h1 {
+            margin: 0 0 10px;
+            font-size: clamp(30px, 6vw, 56px);
+            line-height: 1.02;
+            letter-spacing: -0.04em;
+        }
+
+        p {
+            margin: 0;
+            color: var(--muted);
+            font-size: 18px;
+            line-height: 1.7;
+        }
+
+        .path {
+            margin-top: 22px;
+            padding: 14px 16px;
+            border-radius: 16px;
+            background: rgba(19, 32, 51, 0.06);
+            font-family: Consolas, monospace;
+            word-break: break-all;
+        }
+
+        .accent {
+            display: inline-block;
+            margin-bottom: 16px;
+            padding: 8px 12px;
+            border-radius: 999px;
+            font-size: 13px;
+            font-weight: 700;
+            color: white;
+            background: linear-gradient(135deg, var(--accent), var(--accent-deep));
+        }
+    </style>
+</head>
+<body>
+    <main class="panel">
+        <div class="accent">GitHub Pages</div>
+        <h1>QR Photo Booth Public Files</h1>
+        <p>
+            This site publishes the latest exported booth images.
+            Photo files are served from the path below, and the kiosk app
+            generates QR codes that point directly to those files.
+        </p>
+        <div class="path">/qr/photos/</div>
+    </main>
+</body>
+</html>
