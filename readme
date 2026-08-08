@@ -1,0 +1,179 @@
+현재 app.py는 아래 두 모드를 모두 지원합니다.
+
+1. 기본 모드
+- 같은 Wi-Fi 또는 같은 사내 네트워크에서만 QR 접속 가능
+- Git 설정이 없어도 바로 사용 가능
+
+2. 공개 QR 모드
+- 사진이 GitHub로 자동 push됨
+- QR이 GitHub Pages의 공개 사진 주소를 가리킴
+- GitHub Pages 반영은 즉시가 아닐 수 있음
+
+필수 준비
+
+1. GitHub에 public 저장소를 만듭니다.
+2. 이 폴더를 Git 저장소로 연결합니다.
+3. GitHub Pages를 main 브랜치의 root로 켭니다.
+
+PowerShell 예시
+
+cd C:\Users\BAC1BUY\Desktop\qr
+git init
+git branch -M main
+git add .
+git commit -m "Initial photo booth"
+git remote add origin https://github.com/YOUR_GITHUB_ID/YOUR_REPO.git
+git push -u origin main
+
+GitHub Pages 설정
+
+1. GitHub 저장소로 이동
+2. Settings
+3. Pages
+4. Source: Deploy from a branch
+5. Branch: main
+6. Folder: / (root)
+
+실행 방법
+
+기본 모드로 실행
+
+python app.py
+
+공개 QR 모드로 실행
+
+$env:QR_GIT_AUTO_PUBLISH = "1"
+python app.py
+
+선택 설정
+
+- origin remote가 GitHub 저장소로 연결되어 있으면 app.py가 공개 주소를 자동 추론합니다.
+- 자동 추론이 안 되면 직접 공개 주소를 지정할 수 있습니다.
+
+PowerShell 예시
+
+$env:QR_PUBLIC_BASE_URL = "https://YOUR_GITHUB_ID.github.io/YOUR_REPO/photos"
+$env:QR_GIT_AUTO_PUBLISH = "1"
+python app.py
+
+동작 방식
+
+- photos 폴더에 새 사진이 들어오면 화면이 자동 갱신됩니다.
+- 공개 QR 모드에서는 최신 사진이 GitHub에 commit/push된 뒤 QR이 공개 주소를 사용합니다.
+- Git 저장소가 없거나 push에 실패하면 자동으로 로컬 네트워크 QR로 폴백됩니다.
+
+추가 메모
+
+- .nojekyll 파일은 이미 루트에 추가되어 있습니다.
+- 사진이 인터넷에 공개되므로 민감한 이미지는 올리지 않는 편이 안전합니다.
+- ngrok 토큰을 외부에 노출했다면 기존 토큰은 폐기하고 새로 발급하는 것이 안전합니다.
+"filename": latest.name,
+25
+"modified_ns": latest.stat().st_mtime_ns,
+26
+"photo_url": f"/photo/{encoded}",
+27
+"qr_url": f"/qr/{encoded}",
+28
+"download_url": create_download_url(latest.name),
+29
+"photo_folder": str(PHOTO_DIR),
+30
+"publish_ok": publish_ok,
+31
+"publish_message": publish_message,
+32
+}
+33
+)
+더 많은 선 표시
+9. 실행
+
+VS Code 터미널에서 Anaconda Python으로 실행하세요.
+
+PowerShell
+1
+cd C:\Users\BAC1BUY\Desktop\qr
+더 많은 선 표시
+PowerShell
+1
+python app.py
+더 많은 선 표시
+
+그다음 photos 폴더에 새로운 이름의 사진을 넣습니다.
+
+예:
+
+Plain Text
+1
+photos\20260808_001_firefighter.jpg
+더 많은 선 표시
+
+프로그램 흐름은 다음과 같습니다.
+
+Plain Text
+1
+새 사진 감지
+2
+→ git add
+3
+→ git commit
+4
+→ git push
+5
+→ GitHub Pages 사진 URL로 QR 생성
+6
+→ LTE 휴대폰에서 QR 스캔
+7
+→ 사진 열기
+더 많은 선 표시
+10. 수동 테스트
+
+사진을 한 장 넣은 뒤 VS Code 터미널에서 확인하세요.
+
+PowerShell
+1
+git status
+더 많은 선 표시
+
+정상적으로 Push됐다면:
+
+Plain Text
+1
+Your branch is up to date with 'origin/main'
+2
+nothing to commit, working tree clean
+더 많은 선 표시
+
+GitHub 저장소의 photos 폴더에도 사진이 올라와 있어야 합니다.
+
+LTE 휴대폰에서 아래 형식의 주소를 직접 열어 테스트하세요.
+
+Plain Text
+1
+https://YOUR_GITHUB_ID.github.io/future-photo-booth/photos/사진파일명.jpg
+더 많은 선 표시
+중요한 현실적 제한
+
+GitHub Pages 반영 지연
+ Push 직후 QR을 찍으면 아직 사진이 배포되지 않아 잠시 404가 나올 수 있습니다. GitHub 공식 Quickstart에는 변경 사항 게시에 최대 10분이 걸릴 수 있다고 안내되어 있습니다.
+
+사진이 공개됨
+ URL을 아는 사람은 사진에 접근할 수 있습니다. 파일명은 예상하기 어렵게 UUID를 쓰는 것이 좋습니다.
+
+Python
+1
+import uuid
+2
+ 
+3
+filename = f"{uuid.uuid4().hex}.jpg"
+더 많은 선 표시
+
+행사 후 삭제 필요
+ 사진을 저장소에서 삭제하고 다시 Push해야 합니다. Git 기록에도 이미지가 남을 수 있으므로 개인정보 처리 측면에서는 GitHub를 장기 보관소로 사용하지 않는 편이 안전합니다.
+
+Push 빈도
+ 참가자마다 커밋 하나가 생성됩니다. 소규모 테스트에는 가능하지만, 고빈도 행사 운영에는 이미지 전용 스토리지 방식이 더 적합합니다.
+
+우선 사진 한 장으로 GitHub Pages 반영 속도를 실제 테스트해보는 것이 핵심입니다. 즉시 열리면 현재 구조를 그대로 쓸 수 있고, 지연이 크면 GitHub Pages 대신 공개 오브젝트 스토리지 방식으로 전환해야 합니다.
