@@ -171,7 +171,10 @@ def get_photos():
             photos.append(path)
 
     photos.sort(
-        key=lambda photo: photo.stat().st_mtime,
+        key=lambda photo: max(
+            photo.stat().st_mtime,
+            photo.stat().st_ctime,
+        ),
         reverse=True,
     )
 
@@ -614,7 +617,7 @@ INDEX_HTML = """
 
                 <p class="guide">
                     카메라로 아래 QR 코드를 스캔하면<br>
-                    사진 저장 페이지가 열립니다.
+                    휴대폰에서 사진을 바로 열 수 있습니다.
                 </p>
 
                 <div class="qr-box">
