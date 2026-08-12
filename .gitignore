@@ -1,3 +1,5 @@
 __pycache__/
 *.py[cod]
 ㅠㅁ차
+.env
+궁합/.env

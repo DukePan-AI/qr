@@ -28,10 +28,11 @@ jobs:
 
       - name: Build static site folder
         run: |
-          mkdir -p site/photos
+          mkdir -p site/photos site/gunghap
           cp -R photos/. site/photos/
           cp .nojekyll site/.nojekyll
           cp index.html site/index.html
+          cp gunghap/index.html site/gunghap/index.html
 
       - name: Configure Pages
         uses: actions/configure-pages@v5
